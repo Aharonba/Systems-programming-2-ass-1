@@ -1,3 +1,12 @@
+/**Aharon bassous
+ * aharonba123@gmail.com
+ * 0545526575
+*/
+
+
+#ifndef GRAPH_HPP
+#define GRAPH_HPP
+
 #include <iostream>
 #include <vector>
 
@@ -20,3 +29,5 @@ namespace ariel
     };
 
 }
+
+#endif // GRAPH_HPP

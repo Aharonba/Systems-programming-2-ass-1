@@ -1,4 +1,7 @@
-
+/**Aharon bassous
+ * aharonba123@gmail.com
+ * 0545526575
+*/
 
 #include "Algorithms.hpp"
 using namespace ariel;
@@ -6,15 +9,20 @@ using namespace std;
 #define MAXN 100
 const int INF = 1e7;
 
+/**
+ * Check if the graph is directed.
+ */
 bool Algorithms::isDirected(Graph &g)
 {
     vector<vector<int>> adjMatrix = g.getAdjMatrix();
     int n = g.getSize();
 
+    // Check for asymmetric edges
     for (int i = 0; i < n; ++i)
     {
         for (int j = 0; j < n; ++j)
         {
+            // If there's an edge from i to j but not from j to i, the graph is directed
             if (adjMatrix[(size_t)i][(size_t)j] != adjMatrix[(size_t)j][(size_t)i])
             {
                 return true; // Asymmetric edges found, graph is directed
@@ -22,9 +30,13 @@ bool Algorithms::isDirected(Graph &g)
         }
     }
 
-    return false; // No asymmetric edges found, graph is undirected
+    // If no asymmetric edges are found, the graph is undirected
+    return false;
 }
 
+/**
+ * Perform Breadth First Search (BFS) traversal starting from a given vertex.
+ */
 void Algorithms::BFS(int startVertex, std::vector<bool> &visited, Graph &g)
 {
     std::queue<int> q;
@@ -36,8 +48,10 @@ void Algorithms::BFS(int startVertex, std::vector<bool> &visited, Graph &g)
         int v = q.front();
         q.pop();
 
+        // Traverse all vertices adjacent to the current vertex
         for (int u = 0; u < g.getSize(); ++u)
         {
+            // If there is an edge from v to u and u is not visited, enqueue u and mark it visited
             if (g.getAdjMatrix()[(size_t)v][(size_t)u] && !visited[(size_t)u])
             {
                 q.push(u);
@@ -46,20 +60,20 @@ void Algorithms::BFS(int startVertex, std::vector<bool> &visited, Graph &g)
         }
     }
 }
+
 // Function to check if the graph is connected
 
 int Algorithms::isConnected(Graph &g)
 {
-
+    // If the graph is directed, check for strong connectivity
     if (isDirected(g))
     {
         return isDirectedConnected(g);
     }
-
-    else
+    else // If the graph is undirected, check for connectivity using BFS
     {
         std::vector<bool> visited((size_t)(g.getSize()), false);
-        int startVertex = 0; // Start from vertex 0
+        int startVertex = 0; // Start BFS from vertex 0
         BFS(startVertex, visited, g);
         // Check if all vertices are visited
         for (bool v : visited)
@@ -67,10 +81,13 @@ int Algorithms::isConnected(Graph &g)
             if (!v)
                 return 0; // If any vertex is not visited, the graph is not connected
         }
-        return 1;
-    } // All vertices are visited, so the graph is connected
+        return 1; // All vertices are visited, so the graph is connected
+    }
 }
 
+/**
+ * Reverse the edges of the graph.
+ */
 void Algorithms::reverseEdges(int size, Graph &g)
 {
     const auto &originalMatrix = g.getAdjMatrix();
@@ -91,7 +108,9 @@ void Algorithms::reverseEdges(int size, Graph &g)
     g.setAdjMatrix(reversed); // Update the adjacency matrix with reversed edges
 }
 
-// Utility function for Depth-First Search (DFS) traversal
+/**
+ * Utility function for Depth-First Search (DFS) traversal.
+ */
 void Algorithms::DFSUtil(int v, std::vector<bool> &visited, std::stack<int> &stack, Graph &g)
 {
     visited[(size_t)v] = true;
@@ -105,7 +124,10 @@ void Algorithms::DFSUtil(int v, std::vector<bool> &visited, std::stack<int> &sta
     stack.push(v); // Push vertex in reverse topological order (finishing time)
 }
 
-// Function to determine if the graph is strongly connected
+/**
+ * Check if the directed graph is strongly connected.
+ */
+
 int Algorithms::isDirectedConnected(Graph g)
 {
     int n = g.getSize();
@@ -149,13 +171,15 @@ int Algorithms::isDirectedConnected(Graph g)
     return 1; // Strongly connected if all vertices are reachable in both directions
 }
 
+/**
+ * Find the shortest path between two vertices using the Bellman-Ford algorithm.
+ */
 void Algorithms::shortestPath(Graph graph, int v, int u)
 {
     size_t size = (size_t)graph.getSize();
     vector<vector<int>> adjMatrix = graph.getAdjMatrix();
 
     // Initializes all vertices that do not have an edge between them to infinity
-
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
@@ -170,6 +194,9 @@ void Algorithms::shortestPath(Graph graph, int v, int u)
     bellmanFord(graph, v, u);
 }
 
+/**
+ * Perform the Bellman-Ford algorithm to find the shortest path.
+ */
 void Algorithms::bellmanFord(Graph graph, int src, int dest)
 {
     int V = graph.getSize();
@@ -178,6 +205,7 @@ void Algorithms::bellmanFord(Graph graph, int src, int dest)
     dist[(size_t)src] = 0;
     vector<vector<int>> adjMatrix = graph.getAdjMatrix();
 
+    // Relax edges |V| - 1 times
     for (int i = 0; i < V - 1; i++)
     {
         for (int u = 0; u < V; u++)
@@ -193,6 +221,7 @@ void Algorithms::bellmanFord(Graph graph, int src, int dest)
         }
     }
 
+    // Check for negative weight cycles
     for (int u = 0; u < V; u++)
     {
         for (int v = 0; v < V; v++)
@@ -205,6 +234,7 @@ void Algorithms::bellmanFord(Graph graph, int src, int dest)
         }
     }
 
+    // Print the shortest path
     cout << "Shortest path from " << src << " to " << dest << " is: ";
     if (parent[(size_t)dest] == -1)
     {
@@ -217,6 +247,9 @@ void Algorithms::bellmanFord(Graph graph, int src, int dest)
     }
 }
 
+/**
+ * Recursively print the shortest path.
+ */
 void Algorithms::printPath(vector<int> &parent, int j)
 {
     if (parent[(size_t)j] == -1)
@@ -228,67 +261,77 @@ void Algorithms::printPath(vector<int> &parent, int j)
     cout << j << " ";
 }
 
-// This function returns true if
-// graph G[V][V] is Bipartite, else false
+/**
+ * Utility function to check if a graph is Bipartite starting from a given source vertex.
+ */
 bool Algorithms::isBipartiteUtil(vector<vector<int>> &graph, int src, int colorArr[])
 {
     size_t V = graph.size();
     colorArr[src] = 1;
 
-    // Create a queue (FIFO) of vertex numbers a
-    // nd enqueue source vertex for BFS traversal
+    // Create a queue (FIFO) of vertex numbers and enqueue source vertex for BFS traversal
     queue<int> q;
     q.push(src);
 
-    // Run while there are vertices in queue (Similar to
-    // BFS)
+    // Run while there are vertices in queue (Similar to BFS)
     while (!q.empty())
     {
-        // Dequeue a vertex from queue ( Refer
-        // http://goo.gl/35oz8 )
+        // Dequeue a vertex from queue
         int u = q.front();
         q.pop();
 
         // Find all non-colored adjacent vertices
         for (int v = 0; v < V; ++v)
         {
-            // An edge from u to v exists and
-            // destination v is not colored
+            // An edge from u to v exists and destination v is not colored
             if (graph[(size_t)u][(size_t)v] != 0 && colorArr[v] == -1)
             {
-                // Assign alternate color to this
-                // adjacent v of u
+                // Assign alternate color to this adjacent v of u
                 colorArr[v] = 1 - colorArr[u];
                 q.push(v);
             }
-
-            // An edge from u to v exists and destination
-            // v is colored with same color as u
+            // An edge from u to v exists and destination v is colored with same color as u
             else if (graph[(size_t)u][(size_t)v] != 0 && colorArr[v] == colorArr[u])
                 return false;
         }
     }
 
-    // If we reach here, then all adjacent vertices can
-    // be colored with alternate color
+    // If we reach here, then all adjacent vertices can be colored with alternate color
     return true;
 }
-// Returns true if g is Bipartite, else false
+
+/**
+ * Check if the graph is Bipartite.
+ */
+void Algorithms::isBipartite(Graph &g)
+{
+    if (isBipartiteCheck(g.getAdjMatrix()))
+    {
+        std::cout << "graph is Bipartite\n"
+                  << std::endl;
+    }
+    else
+    {
+        std::cout << "graph is not Bipartite\n"
+                  << std::endl;
+    }
+}
+
+/**
+ * Check if a given graph is Bipartite using BFS traversal.
+ */
 bool Algorithms::isBipartiteCheck(std::vector<vector<int>> g)
 {
-    // Create a color array to store colors assigned to all
-    // vertices. Vertex/ number is used as index in this
-    // array. The value '-1' of colorArr[i] is used to
+    // Create a color array to store colors assigned to all vertices.
+    // Vertex number is used as index in this array. The value '-1' of colorArr[i] is used to
     // indicate that no color is assigned to vertex 'i'.
-    // The value 1 is used to indicate first color is
-    // assigned and value 0 indicates second color is
-    // assigned.
+    // The value 1 is used to indicate first color is assigned and value 0 indicates second color is assigned.
     size_t V = g.size();
     int colorArr[V];
     for (int i = 0; i < V; ++i)
         colorArr[i] = -1;
 
-    // This code is to handle disconnected graph
+    // This code is to handle disconnected graphs
     for (int i = 0; i < V; i++)
         if (colorArr[i] == -1)
             if (isBipartiteUtil(g, i, colorArr) == false)
@@ -297,18 +340,9 @@ bool Algorithms::isBipartiteCheck(std::vector<vector<int>> g)
     return true;
 }
 
-void Algorithms::isBipartite(Graph &g)
-{
-    if (isBipartiteCheck(g.getAdjMatrix()))
-    {
-        std::cout << "graph is Bipartite" << std::endl;
-    }
-    else
-    {
-        std::cout << "graph is not Bipartite" << std::endl;
-    }
-}
-
+/**
+ * Check if the graph contains a negative weight cycle.
+ */
 void Algorithms::negativeCycle(Graph &graph)
 {
     if (negativeCycleCheck(graph) == true)
@@ -317,10 +351,13 @@ void Algorithms::negativeCycle(Graph &graph)
     }
     else
     {
-        cout << "Graph dosent contains negative weight cycle" << endl;
+        cout << "Graph does not contain negative weight cycle" << endl;
     }
 }
 
+/**
+ * Check if the graph contains a negative weight cycle using the Bellman-Ford algorithm.
+ */
 bool Algorithms::negativeCycleCheck(Graph &graph)
 {
     int V = graph.getSize();
@@ -329,6 +366,7 @@ bool Algorithms::negativeCycleCheck(Graph &graph)
 
     vector<vector<int>> adjMatrix = graph.getAdjMatrix();
 
+    // Relax edges V-1 times
     for (int i = 0; i < V - 1; i++)
     {
         for (int u = 0; u < V; u++)
@@ -358,6 +396,9 @@ bool Algorithms::negativeCycleCheck(Graph &graph)
     return false; // No negative cycle found
 }
 
+/**
+ * Check if the graph contains a cycle and return the cycle path if found.
+ */
 string Algorithms::isContainsCycle(Graph &g)
 {
     vector<Color> colors((size_t)g.getSize(), WHITE);
@@ -375,9 +416,12 @@ string Algorithms::isContainsCycle(Graph &g)
             }
         }
     }
-    return "-1";
+    return "-1"; // No cycle found
 }
 
+/**
+ * Utility function to recursively check if the graph contains a cycle starting from a given source vertex.
+ */
 string Algorithms::isContainsCycleUtil(Graph &g, size_t src, vector<Color> *colors, vector<int> *parents, vector<int> *path)
 {
     (*colors)[src] = GRAY;
@@ -398,6 +442,7 @@ string Algorithms::isContainsCycleUtil(Graph &g, size_t src, vector<Color> *colo
             }
             else if ((*colors)[v] == GRAY)
             {
+                // Check if it's a directed graph and the current vertex is the parent of the source vertex
                 if (!g.isDirected() && (*parents)[src] == (int)v)
                 {
                     continue;
@@ -410,9 +455,12 @@ string Algorithms::isContainsCycleUtil(Graph &g, size_t src, vector<Color> *colo
 
     (*colors)[src] = BLACK;
     path->pop_back();
-    return "";
+    return ""; // No cycle found
 }
 
+/**
+ * Construct the cycle path from the current traversal path.
+ */
 string Algorithms::constructCyclePath(vector<int> &path, int start)
 {
     string cycle;

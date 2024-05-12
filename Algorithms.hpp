@@ -1,3 +1,13 @@
+// Algorithms.hpp
+
+/**Aharon bassous
+ * aharonba123@gmail.com
+ * 0545526575
+*/
+
+#ifndef ALGORITHMS_H
+#define ALGORITHMS_H
+
 #include "Graph.hpp"
 #include <queue>
 #include <vector>
@@ -47,3 +57,5 @@ namespace ariel
     };
 
 }
+
+#endif

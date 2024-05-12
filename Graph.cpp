@@ -1,3 +1,9 @@
+/**Aharon bassous
+ * aharonba123@gmail.com
+ * 0545526575
+*/
+
+
 #include "Graph.hpp"
 using namespace ariel;
 
@@ -46,7 +52,7 @@ void Graph::printGraph()
 
 /**
  * Check if the graph is directed.
- * 
+ *
  * @return True if the graph is directed, false otherwise.
  */
 bool Graph::isDirected()
