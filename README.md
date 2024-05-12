@@ -1,29 +1,47 @@
-# מטלה 1 - גרפים (Classes and Namespaces)
+# Graph and Algorithms Library
 
-המטרה שלכם במטלה הזאת היא ליצור מחלקה שמייצגת גרף ולממש אלגוריתמים על הגרפים (זה הזמן להזכר בקורס אלגוריתמים 1).
+This library provides classes and algorithms for working with graphs. It includes functionalities for graph representation, traversal, and various graph algorithms.
 
-במטלה הזאת הייצוג של הגרף שלכם יתבצע בעזרת מטריצת שכנויות - https://he.wikipedia.org/wiki/%D7%9E%D7%98%D7%A8%D7%99%D7%A6%D7%AA_%D7%A9%D7%9B%D7%A0%D7%95%D7%AA.
+## Classes
 
-הגרף יכול להיות גרף מכוון ולא מכוון וגם גרף ממושקל. מטריצת השכנויות חייבת להיות מטריצה ריבועית.
+### `Graph`
 
-עליכם לכתוב את הקבצים הבאים:
+The `Graph` class represents a graph and provides methods for working with graphs.
 
-```
-Graph.cpp
-Algorithms.cpp
-```
+#### Methods:
 
-הקובץ `Graph.cpp` מכיל מחלקה המייצגת גרף.
-המחלקה מכילה את הפעולות `loadGraph` המקבלת מטריצת שכנויות וטוענת אותה לתוך הגרף ו-`printGraph` שמדפיסה את הייצוג של הגרף (הפורמט לבחירתכם, ראו דוגמה ב-`Demo.cpp`).
+- `Graph()`: Constructor to create an empty graph.
+- `loadGraph(const std::vector<std::vector<int>> &graph)`: Load the graph with the provided adjacency matrix.
+- `printGraph()`: Print information about the graph, including the number of vertices and edges.
+- `isDirected()`: Check if the graph is directed.
+- `getSize()`: Get the number of vertices in the graph.
+- `getAdjMatrix()`: Get the adjacency matrix of the graph.
+- `setAdjMatrix(std::vector<std::vector<int>> Matrix)`: Set the adjacency matrix of the graph.
 
-הקובץ `Algorithms.cpp` מכיל מימושים לאלגוריתמים על גרפים. ביניהם:
+### `Algorithms`
 
-- `isConnected(g)` - האלגוריתם מקבל גרף ומחזיר 1 אם הגרף קשיר (אחרת מחזיר 0).
-- `shortestPath(g,start,end)` - האלגוריתם מקבל גרף, קודקוד התחלה וקודקוד סיום ומחזיר את המסלול הקל ביותר (במקרה שהגרף לא ממושקל - הקצר ביותר) בין שני הקודקודים. במידה ואין מסלול כזה, האלגוריתם יחזיר -1.
-- `isContainsCycle(g)` - האלגוריתם מקבל גרף ומדפיס מעגל כלשהו. אם לא קיים מעגל בגרף, האלגוריתם יחזיר 0.
-- `isBipartite(g)` - האלגוריתם מקבל גרף ומחזיר את החלוקה של הגרף לגרף דו-צדדי. אם אי אפשר לחלק את הגרף, האלגוריתם יחזיר 0.
-- `negativeCycle(g)` - האלגוריתם מקבל גרף ומוצא מעגל שלילי (כלומר מעגל שסכום המשקלים של הצלעות שלילי). אם לא קיים מעגל כזה, האלגוריתם ידפיס שלא קיים מעגל שלילי.
+The `Algorithms` class provides various graph algorithms such as BFS, DFS, Bellman-Ford, checking for bipartite graphs, and detecting cycles.
 
-הקובץ `Demo.cpp` מכיל דוגמאות של קלטים ופלטים.
-עליכם לכתוב בתחילת כל קובץ את מספר תעודת הזהות שלכם ואת המייל. כמו כן, בנוסף לקבצים של המטלה אתם נדרשים להגיש גם קובץ README המתאר את אופן המימוש ואת החלוקה שביצעתם בקוד (סוג של מדריך משתמש). אי עמידה בהנחיות תגרור הפחתה בציון. בהצלחה!
-  
+#### Methods:
+
+- `isDirected(Graph &g)`: Check if the graph is directed.
+- `BFS(int startVertex, std::vector<bool> &visited, Graph &g)`: Perform Breadth First Search (BFS) traversal starting from a given vertex.
+- `isConnected(Graph &g)`: Check if the graph is connected.
+- `reverseEdges(int size, Graph &g)`: Reverse the edges of the graph.
+- `DFSUtil(int v, std::vector<bool> &visited, std::stack<int> &stack, Graph &g)`: Utility function for Depth-First Search (DFS) traversal.
+- `isDirectedConnected(Graph g)`: Check if the directed graph is strongly connected.
+- `shortestPath(Graph graph, int v, int u)`: Find the shortest path between two vertices using the Bellman-Ford algorithm.
+- `bellmanFord(Graph graph, int src, int dest)`: Perform the Bellman-Ford algorithm to find the shortest path.
+- `printPath(vector<int> &parent, int j)`: Recursively print the shortest path.
+- `isBipartiteUtil(vector<vector<int>> &graph, int src, int colorArr[])`: Utility function to check if a graph is Bipartite starting from a given source vertex.
+- `isBipartite(Graph &g)`: Check if the graph is Bipartite.
+- `isBipartiteCheck(std::vector<vector<int>> g)`: Check if a given graph is Bipartite using BFS traversal.
+- `negativeCycle(Graph &graph)`: Check if the graph contains a negative weight cycle.
+- `negativeCycleCheck(Graph &graph)`: Check if the graph contains a negative weight cycle using the Bellman-Ford algorithm.
+- `isContainsCycle(Graph &g)`: Check if the graph contains a cycle and return the cycle path if found.
+- `isContainsCycleUtil(Graph &g, size_t src, vector<Color> *colors, vector<int> *parents, vector<int> *path)`: Utility function to recursively check if the graph contains a cycle starting from a given source vertex.
+- `constructCyclePath(vector<int> &path, int start)`: Construct the cycle path from the current traversal path.
+
+## Usage
+
+To use this library, include the necessary header files and instantiate the `Graph` and `Algorithms` classes as needed. You can then use the provided methods to work with graphs and perform various graph algorithms.
